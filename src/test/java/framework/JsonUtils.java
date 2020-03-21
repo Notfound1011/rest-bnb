@@ -2,14 +2,17 @@ package framework;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
-import service.user.testcase.getPortalConfig;
+import org.junit.jupiter.api.Test;
+import service.user.testcase.TestGetPortalConfig;
 
 import java.io.File;
 import java.io.IOException;
 
 public class JsonUtils {
-    private Object addKVtoJsonData(Object obj,String FileName,String key,Object value) {
-        String jsonFilePath = obj.getClass().getResource(FileName).getPath();
+    public JsonUtils() {
+    }
+
+    public Object addKVtoJsonFile(String jsonFilePath, String key, Object value) {
         File file = new File(jsonFilePath );
         String input = null;
         try {
@@ -22,10 +25,9 @@ public class JsonUtils {
         return object;
     }
 
-
-    public static void main(String[] args) {
-        JsonUtils ju = new JsonUtils();
-//        Object  data = ju.addKVtoJsonData(new getPortalConfig(),"getPortalConfig.json","ov",true);
-//        System.out.println(data);
+    public Object addKVtoJsonBody(String JsonBody, String key, Object value) {
+        JSONObject object = JSONObject.parseObject(JsonBody);
+        object.put(key,value);
+        return object;
     }
 }

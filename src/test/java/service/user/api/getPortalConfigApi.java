@@ -3,9 +3,11 @@ package service.user.api;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
+import framework.JsonUtils;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import service.CtripBnb;
+import service.user.testcase.TestGetPortalConfig;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -14,7 +16,7 @@ import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
 
-public class UserApi extends BaseApi {
+public class getPortalConfigApi extends BaseApi {
     public Response get(String userid) {
         HashMap<String, Object> params=new HashMap<>();
         params.put("userid", userid);
@@ -52,17 +54,18 @@ public class UserApi extends BaseApi {
                 .then().log().all().extract().response();
     }
 
-    public Response getPortalConfig(String cityName, int cityId, String checkInDate, String checkOutDate, HashMap<String, Object> data) {
+    public Response getPortalConfig(String cityName, int cityId, String checkInDate, String checkOutDate,String oversea ,boolean isOversea) {
         String getPortalConfigUrl = requestUrl +  Thread.currentThread().getStackTrace()[1].getMethodName();
-        System.out.println(getPortalConfigUrl);
+        HashMap<String, Object> data = new HashMap<>();
         data.put("cityName", cityName);
         data.put("cityId", cityId);
         data.put("checkInDate", checkInDate);
         data.put("checkOutDate", checkOutDate);
         //todo: 使用模板技术
 
-        String body=template("/service/user/api/getPortalConfig.json", data);
-
+        String templateBody=template("getPortalConfig.json", data);
+        JsonUtils jsonBody = new JsonUtils();
+        Object body = jsonBody.addKVtoJsonBody(templateBody,oversea,isOversea);
         return given()
                 .contentType(ContentType.JSON)
                 .body(body)

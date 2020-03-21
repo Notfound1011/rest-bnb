@@ -3,7 +3,7 @@ package service.restassured;
 import io.restassured.builder.ResponseBuilder;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import service.user.api.UserApi;
+import service.user.api.getPortalConfigApi;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -19,14 +19,14 @@ public class TestHttp {
 
     @Test
     void schema_wrong() {
-        UserApi user = new UserApi();
+        getPortalConfigApi user = new getPortalConfigApi();
         user.get("seveniruby").then().body(matchesJsonSchemaInClasspath("service/user/testcase/user_get_schema.json"));
     }
 
 
     @Test
     void schema_right() {
-        UserApi user = new UserApi();
+        getPortalConfigApi user = new getPortalConfigApi();
         user.get("seveniruby").then().body(matchesJsonSchemaInClasspath("service/user/testcase/user_get_schema_right.json"));
     }
 
